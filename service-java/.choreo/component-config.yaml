@@ -37,7 +37,7 @@ spec:
         connectionConfig: 01eeeb33-7d1d-15de-8434-db88be467b99
         env:
           - from: ServiceURL
-            to: <YOUR_ENV_VARIABLE_NAME_HERE>
+            to: NOTIFICATION_API_ENDPOINT
           - from: ConsumerKey
             to: NOTIFICATION_API_CLIENT_ID
           - from: ConsumerSecret
