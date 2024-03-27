@@ -31,3 +31,16 @@ spec:
       # This is only applicable to REST endpoint types.
       # The path should be relative to the docker context.
       schemaFilePath: src/main/resources/openapi.yaml
+  outbound:
+    serviceReferences:
+      - name: choreo:///ramith2023/vuzc/bqxvuq/1a41c/v1.0/PUBLIC
+        connectionConfig: 01eeeb33-7d1d-15de-8434-db88be467b99
+        env:
+          - from: ServiceURL
+            to: <YOUR_ENV_VARIABLE_NAME_HERE>
+          - from: ConsumerKey
+            to: NOTIFICATION_API_CLIENT_ID
+          - from: ConsumerSecret
+            to: NOTIFICATION_API_CLIENT_SECRET
+          - from: TokenURL
+            to: NOTIFICATION_API_TOKEN_URL

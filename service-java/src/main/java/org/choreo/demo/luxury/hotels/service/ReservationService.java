@@ -1,4 +1,4 @@
-package org.choreo.demo.luxury.hotels;
+package org.choreo.demo.luxury.hotels.service;
 
 import org.choreo.demo.luxury.hotels.dto.ReservationRequest;
 import org.choreo.demo.luxury.hotels.dto.UpdateReservationRequest;
@@ -33,6 +33,7 @@ public class ReservationService {
     private RoomTypeRepository roomTypeRepository;
     @Autowired
     private RoomRepository roomRepository;
+
 
     public List<RoomType> getAvailableRoomTypes(String checkinDate, String checkoutDate, int guestCapacity) throws Exception {
 
@@ -83,6 +84,8 @@ public class ReservationService {
         reservation.setRoom(selectedRooms.get(0));
         reservation.setCheckinDate(checkinDate);
         reservation.setCheckoutDate(checkoutDate);
+
+
         return reservationRepository.save(reservation);
     }
 
@@ -105,8 +108,10 @@ public class ReservationService {
         }
     }
 
-    public void delete(Long reservationId) {
-        reservationRepository.deleteById(reservationId);
+    public  Optional<Reservation> delete(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        reservation.ifPresent(reservationRepository::delete);
+        return reservation;
     }
 
     public List<Reservation> findByUserId(String userId) {

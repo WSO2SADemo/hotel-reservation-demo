@@ -4,7 +4,10 @@ import org.choreo.demo.luxury.hotels.dto.ReservationDto;
 import org.choreo.demo.luxury.hotels.dto.ReservationRequest;
 import org.choreo.demo.luxury.hotels.dto.UpdateReservationRequest;
 import org.choreo.demo.luxury.hotels.model.Reservation;
+import org.choreo.demo.luxury.hotels.model.ReservationEvent;
 import org.choreo.demo.luxury.hotels.model.RoomType;
+import org.choreo.demo.luxury.hotels.service.NotificationService;
+import org.choreo.demo.luxury.hotels.service.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -24,6 +28,9 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @GetMapping("/roomTypes")
     public ResponseEntity<List<RoomType>> getRoomTypes(@RequestParam(defaultValue = "2024-02-15T15:00:38.122Z") String checkinDate,
@@ -46,6 +53,7 @@ public class ReservationController {
         }
 
         Reservation reservation = reservationService.save(reservationRequest);
+        notificationService.sendNotification(ReservationEvent.ReservationCreated, reservation);
         ReservationDto dto = ReservationDto.from(reservation);
 
         logger.info("reservation created " + dto);
@@ -56,6 +64,7 @@ public class ReservationController {
     public ResponseEntity<ReservationDto> updateReservation(@PathVariable("reservation_id") Long reservationId,
                                                          @RequestBody UpdateReservationRequest updateReservationRequest) {
         Reservation reservation = reservationService.update(reservationId, updateReservationRequest);
+        notificationService.sendNotification(ReservationEvent.ReservationUpdated, reservation);
         ReservationDto dto = ReservationDto.from(reservation);
         logger.info("updated the reservation: " + dto);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -63,8 +72,13 @@ public class ReservationController {
 
     @DeleteMapping("/{reservation_id}")
     public ResponseEntity<Void> deleteReservation(@PathVariable("reservation_id") Long reservationId) {
-        reservationService.delete(reservationId);
+        Optional<Reservation> deletedReservation = reservationService.delete(reservationId);
         logger.info("deleted the reservation: " + reservationId);
+
+        deletedReservation.ifPresent(reservation ->
+                notificationService.sendNotification(ReservationEvent.ReservationDeleted, reservation)
+        );
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
