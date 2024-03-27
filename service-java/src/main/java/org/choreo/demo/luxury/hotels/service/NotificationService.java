@@ -16,9 +16,6 @@ import reactor.core.publisher.Mono;
 public class NotificationService {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
-    @Value("${notification-api.endpoint}")
-    private String notificationApiEndpoint;
-
 
     @Autowired
     UserRepository userRepository;
@@ -28,8 +25,6 @@ public class NotificationService {
 
     @Autowired
     WebClient webClient;
-
-
 
     public void sendNotification(ReservationEvent event, Reservation reservation) {
 
@@ -77,6 +72,7 @@ public class NotificationService {
     }
 
     public Mono<String> sendEmail(EmailRequest emailRequest) {
+
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/send-email").build())
                 .bodyValue(emailRequest)

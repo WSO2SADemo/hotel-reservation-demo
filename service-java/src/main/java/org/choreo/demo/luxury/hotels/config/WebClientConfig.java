@@ -1,5 +1,6 @@
 package org.choreo.demo.luxury.hotels.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager;
@@ -10,6 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
+
+    @Value("${notification-api.endpoint}")
+    private String notificationApiEndpoint;
+
     @Bean
     WebClient webClient(
             ReactiveClientRegistrationRepository clientRegistrationRepository,
@@ -21,8 +26,8 @@ public class WebClientConfig {
                 )
         );
 
-        oauth.setDefaultClientRegistrationId("AuthProvider");
-        return WebClient.builder()
+        oauth.setDefaultClientRegistrationId("notificationApi");
+        return WebClient.builder().baseUrl(notificationApiEndpoint)
                 .filter(oauth)
                 .build();
     }
