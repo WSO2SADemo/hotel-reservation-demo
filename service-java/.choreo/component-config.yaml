@@ -34,7 +34,7 @@ spec:
   outbound:
     serviceReferences:
       - name: choreo:///ramith2023/vuzc/bqxvuq/1a41c/v1.0/PUBLIC
-        connectionConfig: 01eeec5e-9cfd-1700-aaac-4008cd04fbd2
+        connectionConfig: 01eeece2-c791-10ce-9235-3cb2559a3361
         env:
           - from: ServiceURL
             to: NOTIFICATION_API_ENDPOINT
