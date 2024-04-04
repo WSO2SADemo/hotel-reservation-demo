@@ -33,8 +33,8 @@ spec:
       schemaFilePath: src/main/resources/openapi.yaml
   outbound:
     serviceReferences:
-      - name: choreo:///ramith2023/mwsnotification/awepdu/1a41c/v1.0/PUBLIC
-        connectionConfig: 01eef237-edb1-1320-bd2c-64c8a85505aa
+      - name: choreo:///ramith2023/workshopwebapp/esctzd/1a41c/v1.0/PUBLIC
+        connectionConfig: 01eef261-f159-1ae8-b129-efeb61088a1b
         env:
           - from: ServiceURL
             to: NOTIFICATION_API_ENDPOINT
