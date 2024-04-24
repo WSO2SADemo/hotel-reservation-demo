@@ -1,9 +1,9 @@
 declare global {
   interface Window {
     configs: {
-      apiUrl: string;
+      serviceURL: string;
     };
   }
 }
 
-export const apiUrl = window?.configs?.apiUrl ? window.configs.apiUrl : "http://localhost:3000/api/reservations";
+export const apiUrl = window?.configs?.serviceURL ? window.configs.serviceURL : "http://localhost:3000/api/reservations";
